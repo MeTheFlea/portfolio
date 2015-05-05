@@ -1,0 +1,32 @@
+{% include header.html %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-4">
+			<img class="img-responsive center-block img-thumbnail" src="{{ page.image }}"></img>
+		</div>
+		<div class="col-xs-8">
+			{% for section in page.sections %}
+			<h1 class="title">{{ section[0] }}</h1>
+			{% for text in section[1] %}
+			<p class="text">{{ text }}</p>
+			{% endfor %}
+			{% endfor %}
+		</div>
+	</div>
+	<div class="row">
+		<h1 class="title">Skills <small>in descending order by experience</small></h1>
+		{% for bullet in page.bullets %}
+		<div class="col-sm-3">
+			<h3 class="title">{{ bullet[0] }}</small></h3>
+			<ul>
+				{% for bulletPoint in bullet[1] %}
+				<li>{{ bulletPoint }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% include footer.html %}

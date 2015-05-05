@@ -1,0 +1,96 @@
+{% include header.html %}
+
+<script>
+var slider;
+$(document).ready(function(){
+  slider = $('.bxslider').bxSlider( {
+  		responsive: true,
+  		slideWidth: 1000,
+  		minSlides: 1,
+  		maxSlides: 1,
+  		video: true,
+  		auto: true,
+  		pause: 4000
+  	} );
+
+  $( ".bxslider" ).mouseenter(function() {
+  		slider.stopAuto();
+	});
+  	$( ".bxslider" ).mouseleave(function() {
+  		if( slider.getCurrentSlide() != 0 ) {
+  			slider.startAuto();
+  		}
+	});
+});
+
+
+</script>
+
+<div class="container">
+	<h1 class="title">{{ page.title }} 
+		<small class="title" style="opacity:0.5;">
+		|
+			{% for tech in page.tech %}
+				{{ tech }} |
+			{% endfor %}
+		</small>
+	</h1>
+</div>
+
+<div class="container-fluid parallax-window" data-parallax="scroll" data-image-src="{{ page.imgDir }}bg.png" data-speed="0.4" style="padding-top: 20px;">
+	<ul class="bxslider">
+	{% if page.youtube %}
+		<li><iframe src="{{ page.youtube }}" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></li>
+	{% endif %}
+
+	{% assign images = page.imgCount | minus:1 %}
+	{% for i in (0..images) %}
+		<li><img src="{{ page.imgDir }}{{ i }}.png"/></li>
+	 {% endfor %}
+	</ul>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-8">
+			{% for section in page.sections %}
+			<h2 class="title">{{ section[0] }}</h2>
+			{% for text in section[1] %}
+			<p class="text">{{ text }}</p>
+			{% endfor %}
+			{% endfor %}
+		</div>
+		<div class="col-sm-4">
+			<h2>Features</h2>
+			<p class="text">
+				<ul>
+					{% for feature in page.features %}
+					<li>{{ feature }}</li>
+					{% endfor %}
+				</ul>
+			</p>
+
+			<h2>Downloads</h2>
+			<div class="well">
+			{% if page.bin contains '.zip' %}
+				<a href="{{ page.bin }}"><p><span class="fa fa-download"></span> Binaries (Win32).</p></a>
+			{% elsif page.bin %}
+				<p class="muted"><span class="fa fa-exclamation-circle"></span> {{ page.bin }}</p>
+			{% else %}
+				<p class="muted"><span class="fa fa-exclamation-circle"></span> Binaries unavailable.</p>
+			{% endif %}
+			{% if page.source contains '.zip' %}
+				<a href="{{ page.source }}"><p><span class="fa fa-folder-open"></span> Source files.</p></a>
+			{% elsif page.source %}
+				<p class="muted"><span class="fa fa-folder-open-o"></span> {{ page.source }}</p>
+			{% else %}
+				<p class="muted"><span class="fa fa-folder-open-o"></span> Source files unavailable.</p>
+			{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ content }}
+
+{% include footer.html %}
