@@ -4,7 +4,7 @@ layout : project
 
 imgDir: /images/PS4/
 imgCount: 2
-bin: Binaries availble on request (this is a .pkg file that can only be installed manually onto another PlayStation 4).
+bin: Binaries available on request (this is a .pkg file that can only be installed manually onto another PlayStation 4).
 source: Source files unavailable due to NDA.
 title : PlayStation 4 Arkanoid Clone
 tech: 
