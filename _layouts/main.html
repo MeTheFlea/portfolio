@@ -3,30 +3,70 @@
 {% assign projects = site.projects | sort:"index" %}
 
 <script>
-jQuery( function($) {
-	$( '.fill' ).responsiveEqualHeightGrid();
+$(document).ready(function(){
+  var startSlide = GetUrlNum();
+  slider = $('.bxslider').bxSlider( {
+      responsive: true,
+      startSlide: startSlide,
+      minSlides: 1,
+      maxSlides: 1,
+      video: true,
+      auto: true,
+      pause: 5000,
+      controls: false,
+      adaptiveHeight: true,
+      easing: 'ease-in-out',
+      onSlideAfter: function($slideElement, oldIndex, newIndex) {
+        OnIndex( newIndex );
+      },
+      onSliderLoad: function( currentIndex ) {
+          $("#prev").click( function() { PreviousSlide(); } );
+          $('#next').click( function() { NextSlide(); } );
+
+          OnIndex( startSlide );
+      }
+    } );
+
+   $( "#panel" ).mouseenter(function() {
+      slider.stopAuto();
+  });
+    $( "#panel" ).mouseleave(function() {
+        slider.startAuto();
+  });
+
+  
+  $('.fill').responsiveEqualHeightGrid();
+
 } );
 
-$( document ).ready( function() {
-	$( '#carousel' ).carousel( {
-		interval: false
-	} );
+function PreviousSlide() {
+  slider.goToPrevSlide();
+}
 
-  OnIndex( 0 );
+function NextSlide() {
+  slider.goToNextSlide();
+}
 
-	$('#carousel').on('slid.bs.carousel', function (event) {
-  		  var active = $(event.target).find('.carousel-inner > .item.active');
-		  var from = active.index();
-		  var next = $(event.relatedTarget);
-		  var to = next.index();
-		  var direction = event.direction;
-		  OnIndex( to );
-	});
-} );
+function GetUrlNum() {
+  var hash = window.location.hash.substring(1);
+  
+  {% for project in projects %}
+    var name{{ forloop.index }} = GetShortUrl( "{{ project.url }}" );
+  {% endfor %}
+
+  switch( hash ) {
+  {% for project in projects %}
+    case name{{ forloop.index }}:
+      return {{ forloop.index }} - 1;
+    break;
+  {% endfor %}
+    default:
+      return 0;
+    break;
+  }
+}
 
 function OnIndex( a_index ) {
-	console.log( a_index );
-
   var title;
   var desc;
   var link;
@@ -42,10 +82,17 @@ function OnIndex( a_index ) {
         {% for tech in project.tech %}
         tags = tags + " {{ tech }} |";
         {% endfor %}
+
       break;
       
     {% endfor %}
   }
+
+  var urlWithoutAnchor = document.URL.replace(/#.*$/, "");
+  var nameWithoutSpace = GetShortUrl( link );
+  var newUrl = urlWithoutAnchor + '#' + nameWithoutSpace;
+  window.location = newUrl;
+
 
   $( '#gameName' ).text( title );
   $( '#gameName' ).attr( "href", link );
@@ -59,56 +106,45 @@ function OnIndex( a_index ) {
 	 <h2 class="title">Portfolio</h2>
 </div>
 
-<div id="carousel" class="carousel slide carouselBacking">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-  {% assign index = 0 %}
+<div id="panel">
+  <div class="bxslider">
   {% for page in projects %}
-    {% if index == 0 %}
-    <li data-target="#carousel" data-slide-to="{{ index }}" class="active"></li>
-    {% else %}
-    <li data-target="#carousel" data-slide-to="{{ index }}"></li>
-    {% endif %}
-    {% assign index = index | plus: 1 %}
-  {% endfor %}
-  </ol>
+    <div class="container" style="width: 100%; background: url( &quot;{{ page.imgDir }}bg.png&quot; ) center center no-repeat; background-size: cover;">
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner" style="height: 100%;" role="listbox">
-  {% assign index = 0 %}
-  {% for page in projects %}
-    {% if index == 0 %}
-    <div class="item active" style="height: 100%;background: url( &quot;{{ page.imgDir }}bg.png&quot; ) center center no-repeat;background-size: cover;">
-    {% else %}
-    <div class="item" style="height: 100%;background: url( &quot;{{ page.imgDir }}bg.png&quot; ) center center no-repeat;background-size: cover;">
-    {% endif %}
-    {% if page.youtube %}
-    		<iframe class="sliderItem" src="{{ page.youtube }}" frameborder="0" allowfullscreen></iframe>
-    {% else %}
-        <img class="sliderItem" src="{{ page.imgDir }}0.png"/>
-    {% endif %}
+        <div class="container card">
+        {% if page.youtube %}
+          <iframe src="{{ page.youtube }}" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        {% else %}
+          <img class="img-responsive" style="max-height: 600px; display: block; margin-left: auto; margin-right: auto;" src="{{ page.imgDir }}0.png"/>
+        {% endif %}
+        </div>
+
+        <div class="container card">
+          {% assign tag = "" %}
+          {% for tech in page.tech %}
+            {% capture tag %}{{ tag }} | {{ tech }}{% endcapture %}
+          {% endfor %}
+          <h1 class="title"><a class="title" href="{{ page.url }}">{{ page.title }}</a><small class="title" style="opacity:0.5;">{{ tag }}</small></h1>
+          <p id="desc" class="text">{{ page.sections["Description"][0] }}</p>
+          <p class="text"><a href="{{ page.url }}">Read more...</a></p>
+        </div>
+
+        <br>
     </div>
-    {% assign index = index | plus: 1 %}
+
   {% endfor %}
-
-  </div>
-
-  <!-- Controls -->
-  <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
-    <span class="fa fa-chevron-left fa-3x" style="display: inline-block; position: absolute; top: 45%; z-index: 5;" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
-    <span class="fa fa-chevron-right fa-3x" style="display: inline-block; position: absolute; top: 45%; z-index: 5;" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+</div>
+  <a><span id="prev" class="fa fa-chevron-left fa-5x" style="position: absolute; top: 50%; left: 20px;"></span></a>
+  <a><span id="next" class="fa fa-chevron-right fa-5x" style="position: absolute; top: 50%; right: 20px;"></span></a>
 </div>
 
-<div class="container">
+<!--
+<div class="container" style="margin-top: -30px;">
 	<h1 class="title"><a class="title" id="gameName" href="/"></a><small id="small" class="title" style="opacity:0.5;"></small></h1>
 	<p id="desc" class="text"></p>
   <p class="text"><a id="more" href="/">Read more...</a></p>
 </div>
+-->
 
 {{ content }}
 

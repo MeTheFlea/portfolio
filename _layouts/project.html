@@ -10,17 +10,22 @@ $(document).ready(function(){
   		maxSlides: 1,
   		video: true,
   		auto: true,
+  		easing: 'ease-in-out',
   		pause: 4000
   	} );
 
-  $( ".bxslider" ).mouseenter(function() {
-  		slider.stopAuto();
+  	$( ".bxslider" ).mouseenter(function() {
+		slider.stopAuto();
 	});
-  	$( ".bxslider" ).mouseleave(function() {
-  		if( slider.getCurrentSlide() != 0 ) {
+	$( ".bxslider" ).mouseleave(function() {
+		if( slider.getCurrentSlide() != 0 ) {
   			slider.startAuto();
   		}
 	});
+
+	$( "#navTitle" ).attr( "href", "/#" + GetShortUrl( "{{ page.url }}" ) );
+
+
 });
 
 
@@ -37,18 +42,23 @@ $(document).ready(function(){
 	</h1>
 </div>
 
-<div class="container-fluid parallax-window" data-parallax="scroll" data-image-src="{{ page.imgDir }}bg.png" data-speed="0.4" style="padding-top: 20px;">
-	<ul class="bxslider">
+<div class="container-fluid parallax-window" data-parallax="scroll" data-image-src="{{ page.imgDir }}bg.png" data-speed="0.4">
+<div class="bxslider" >
 	{% if page.youtube %}
-		<li><iframe src="{{ page.youtube }}" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe></li>
+		<div class="container card">
+			<iframe src="{{ page.youtube }}" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+		</div>
 	{% endif %}
 
 	{% assign images = page.imgCount | minus:1 %}
 	{% for i in (0..images) %}
-		<li><img src="{{ page.imgDir }}{{ i }}.png"/></li>
+		<div class="container card">
+			<img style="max-height: 600px; display: block; margin-left: auto; margin-right: auto;" src="{{ page.imgDir }}{{ i }}.png"/>
+		</div>
 	 {% endfor %}
-	</ul>
+	</div>
 </div>
+
 
 <div class="container">
 	<div class="row">

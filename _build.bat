@@ -3,4 +3,4 @@ REM set PATH=%PATH%;D:\Pretzel;
 REM Pretzel bake
 
 set PATH=%PATH%;D:\ruby\bin;
-jekyll serve
+start cmd.exe

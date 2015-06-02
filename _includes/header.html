@@ -52,6 +52,12 @@
     ga('create', 'UA-62791322-1', 'auto');
     ga('send', 'pageview');
 
+
+    function GetShortUrl( longUrl ) {
+      var shortUrl = longUrl.replace(/\/projects\//g, "");
+      shortUrl = shortUrl.replace( /\//, "" );
+      return shortUrl;
+    }
     </script>
   </head>
 
@@ -68,7 +74,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand title" title="Homepage" href="/">{{ site.name }}</a>
+        <a id="navTitle" class="navbar-brand title" title="Homepage" href="/">{{ site.name }}</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
