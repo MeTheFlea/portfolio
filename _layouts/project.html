@@ -6,26 +6,30 @@ $(document).ready(function(){
   slider = $('.bxslider').bxSlider( {
   		responsive: true,
   		slideWidth: 1000,
+  		startSlide: 0,
   		minSlides: 1,
   		maxSlides: 1,
   		video: true,
   		auto: true,
+  		controls: false,
   		easing: 'ease-in-out',
-  		pause: 4000
+  		pause: 4000,
+  		onSliderLoad: function( currentIndex ) {
+          $("#prev").click( function() { PreviousSlide(); } );
+          $('#next').click( function() { NextSlide(); } );
+      }
   	} );
 
-  	$( ".bxslider" ).mouseenter(function() {
+  	$( "#panel" ).mouseenter(function() {
 		slider.stopAuto();
 	});
-	$( ".bxslider" ).mouseleave(function() {
+	$( "#panel" ).mouseleave(function() {
 		if( slider.getCurrentSlide() != 0 ) {
   			slider.startAuto();
   		}
 	});
 
 	$( "#navTitle" ).attr( "href", "/#" + GetShortUrl( "{{ page.url }}" ) );
-
-
 });
 
 
@@ -42,18 +46,20 @@ $(document).ready(function(){
 	</h1>
 </div>
 
-<div class="container-fluid parallax-window" data-parallax="scroll" data-image-src="{{ page.imgDir }}bg.png" data-speed="0.4">
+<div id="panel" class="container-fluid parallax-window" data-parallax="scroll" data-image-src="{{ page.imgDir }}bg.png" data-speed="0.4">
+<a><span id="prev" class="fa fa-chevron-left fa-5x" style="position: relative; line-height: 0; float: left; margin-left: 10%; z-index: 999;"></span></a>
+  <a><span id="next" class="fa fa-chevron-right fa-5x" style="position: relative; line-height: 0; float: right; margin-right: 10%; z-index: 999;"></span></a>
 <div class="bxslider" >
 	{% if page.youtube %}
-		<div class="container card">
-			<iframe src="{{ page.youtube }}" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+		<div class="container">
+			<iframe src="{{ page.youtube }}" style="padding-top: 20px;" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 		</div>
 	{% endif %}
 
 	{% assign images = page.imgCount | minus:1 %}
 	{% for i in (0..images) %}
-		<div class="container card">
-			<img style="max-height: 600px; display: block; margin-left: auto; margin-right: auto;" src="{{ page.imgDir }}{{ i }}.png"/>
+		<div class="container">
+			<img class="img-responsive" style="display: block; margin-left: auto; margin-right: auto; padding-top: 20px;" src="{{ page.imgDir }}{{ i }}.png"/>
 		</div>
 	 {% endfor %}
 	</div>

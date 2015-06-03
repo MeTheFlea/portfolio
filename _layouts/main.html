@@ -39,14 +39,6 @@ $(document).ready(function(){
 
 } );
 
-function PreviousSlide() {
-  slider.goToPrevSlide();
-}
-
-function NextSlide() {
-  slider.goToNextSlide();
-}
-
 function GetUrlNum() {
   var hash = window.location.hash.substring(1);
   
@@ -107,22 +99,24 @@ function OnIndex( a_index ) {
 </div>
 
 <div id="panel">
+  <a><span id="prev" class="fa fa-chevron-left fa-5x" style="position: relative; line-height: 0; float: left; margin-left: 5%; z-index: 999;"></span></a>
+  <a><span id="next" class="fa fa-chevron-right fa-5x" style="position: relative; line-height: 0; float: right; margin-right: 5%; z-index: 999;"></span></a>
   <div class="bxslider">
   {% for page in projects %}
     <div class="container" style="width: 100%; background: url( &quot;{{ page.imgDir }}bg.png&quot; ) center center no-repeat; background-size: cover;">
 
-        <div class="container card">
+        <div class="container">
         {% if page.youtube %}
-          <iframe src="{{ page.youtube }}" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+          <iframe src="{{ page.youtube }}" style="padding-top: 20px;" width="500" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
         {% else %}
-          <img class="img-responsive" style="max-height: 600px; display: block; margin-left: auto; margin-right: auto;" src="{{ page.imgDir }}0.png"/>
+          <img class="img-responsive" style="display: block; margin-left: auto; margin-right: auto; padding-top: 20px;" src="{{ page.imgDir }}0.png"/>
         {% endif %}
         </div>
 
         <div class="container card">
-          {% assign tag = "" %}
+          {% assign tag = " |" %}
           {% for tech in page.tech %}
-            {% capture tag %}{{ tag }} | {{ tech }}{% endcapture %}
+            {% capture tag %}{{ tag }} {{ tech }} |{% endcapture %}
           {% endfor %}
           <h1 class="title"><a class="title" href="{{ page.url }}">{{ page.title }}</a><small class="title" style="opacity:0.5;">{{ tag }}</small></h1>
           <p id="desc" class="text">{{ page.sections["Description"][0] }}</p>
@@ -134,8 +128,7 @@ function OnIndex( a_index ) {
 
   {% endfor %}
 </div>
-  <a><span id="prev" class="fa fa-chevron-left fa-5x" style="position: absolute; top: 50%; left: 20px;"></span></a>
-  <a><span id="next" class="fa fa-chevron-right fa-5x" style="position: absolute; top: 50%; right: 20px;"></span></a>
+  
 </div>
 
 <!--

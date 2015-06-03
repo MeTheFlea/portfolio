@@ -135,14 +135,11 @@ iframe.sliderItem {
 .card {
 	margin-top: 20px;
 	background-color: rgba( 0, 0, 0, 0.5 );
+}
 
-	-moz-box-shadow: 1em 1em 5em #333333;  
- 	-webkit-box-shadow: 1em 1em 5em #333333;   
- 	box-shadow: 1em 1em 5em #333333;
-
- 	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
+#next,
+#prev {
+	top: 350px;
 }
 
 .card img {
@@ -195,6 +192,11 @@ iframe.sliderItem {
 		padding-bottom: 25px;
 		padding-left: 10px;
 		padding-right: 10px;
+	}
+
+	#next,
+	#prev {
+		top: 150px;
 	}
 }
 
