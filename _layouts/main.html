@@ -99,8 +99,8 @@ function OnIndex( a_index ) {
 </div>
 
 <div id="panel">
-  <a><span id="prev" class="fa fa-chevron-left fa-5x" style="position: relative; line-height: 0; float: left; margin-left: 5%; z-index: 999;"></span></a>
-  <a><span id="next" class="fa fa-chevron-right fa-5x" style="position: relative; line-height: 0; float: right; margin-right: 5%; z-index: 999;"></span></a>
+  <a><span id="prev" class="fa fa-chevron-left fa-5x" style="cursor: pointer; position: relative; line-height: 0; float: left; margin-left: 5%; z-index: 999;"></span></a>
+  <a><span id="next" class="fa fa-chevron-right fa-5x" style="cursor: pointer; position: relative; line-height: 0; float: right; margin-right: 5%; z-index: 999;"></span></a>
   <div class="bxslider">
   {% for page in projects %}
     <div class="container" style="width: 100%; background: url( &quot;{{ page.imgDir }}bg.png&quot; ) center center no-repeat; background-size: cover;">
